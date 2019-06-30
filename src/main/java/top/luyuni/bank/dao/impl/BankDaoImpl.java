@@ -11,6 +11,7 @@ import java.util.Properties;
 import top.luyuni.bank.dao.BankDaoInterface;
 import top.luyuni.bank.model.MoneyBean;
 import top.luyuni.bank.model.UserBean;
+import top.luyuni.bank.util.MD5;
 
 public class BankDaoImpl implements BankDaoInterface{
 	private static volatile BankDaoImpl instance;
@@ -60,7 +61,8 @@ public class BankDaoImpl implements BankDaoInterface{
 		}
 		Properties p = new Properties();
 		p.put("userName", userName);
-		p.put("password", password);
+		String pwd = MD5.getMD5(password + userName);
+		p.put("password", pwd);
 		p.put("money", "0.0");
 		try {
 			FileOutputStream fo = new FileOutputStream(file);
@@ -94,10 +96,11 @@ public class BankDaoImpl implements BankDaoInterface{
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			if(name.equals(userName) && pwd.equals(password)) {
+			String dbPwd = MD5.getMD5(password + userName);
+			if(name.equals(userName) && pwd.equals(dbPwd)) {
 				moneyBean.setMoney(new BigDecimal(money));
 				userBean.setMoneyBean(moneyBean);
-				userBean.setPassword(password);
+				userBean.setPassword(dbPwd);
 				userBean.setUserName(userName);
 				return true;
 			}else {
