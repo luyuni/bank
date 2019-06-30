@@ -14,22 +14,11 @@ import top.luyuni.bank.model.UserBean;
 import top.luyuni.bank.util.MD5;
 
 public class BankDaoImpl implements BankDaoInterface{
-	private static volatile BankDaoImpl instance;
 	private UserBean userBean;
 	private MoneyBean moneyBean;
-	private BankDaoImpl() {
+	public BankDaoImpl() {
 		userBean = UserBean.getInstance();
 		moneyBean = MoneyBean.getInstance();
-	}
-	public static BankDaoImpl getInstance() {
-		if(instance == null) {
-			synchronized(BankDaoImpl.class) {
-				if(instance == null) {
-					instance = new BankDaoImpl();
-				}
-			}
-		}
-		return instance;
 	}
 	@Override
 	public void addBank() {

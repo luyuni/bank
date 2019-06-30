@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 
 import top.luyuni.bank.dao.BankDaoInterface;
 import top.luyuni.bank.dao.impl.BankDaoImpl;
+import top.luyuni.bank.factory.UserDaoFactory;
 import top.luyuni.bank.manager.ManagerInterface;
 import top.luyuni.bank.model.MoneyBean;
 import top.luyuni.bank.util.AccountOverDrawnException;
@@ -14,7 +15,7 @@ public class ManagerImpl implements ManagerInterface{
 	private static volatile ManagerImpl instance;
 	private BankDaoInterface bankDao;
 	private ManagerImpl() {
-		bankDao = BankDaoImpl.getInstance();
+		bankDao = (BankDaoInterface) UserDaoFactory.getBean("BankDaoInterface");
 		moneyBean = MoneyBean.getInstance();
 	}
 	public static ManagerImpl getInstance() {
